@@ -8,6 +8,8 @@ target 'MyFamilyPoints' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNYamap', :path => '../node_modules/react-native-yamap'
+
   target 'MyFamilyPointsTests' do
     inherit! :complete
     # Pods for testing
