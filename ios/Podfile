@@ -10,6 +10,8 @@ target 'MyFamilyPoints' do
 
   pod 'RNYamap', :path => '../node_modules/react-native-yamap'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   target 'MyFamilyPointsTests' do
     inherit! :complete
     # Pods for testing
