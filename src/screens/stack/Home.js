@@ -5,7 +5,7 @@ import { styles } from '../../styles'
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage' 
 //import Geocoder from 'react-native-geocoding';
-import { Geocoder } from 'react-native-yamap';
+//import { Geocoder } from 'react-native-yamap';
 
 
 // const getData = async () => {
@@ -85,20 +85,18 @@ const requestLocationPermission = async () => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: "Cool Photo App Camera Permission",
+          title: "Запрос на Геолокацию",
           message:
-            "Cool Photo App needs access to your camera " +
-            "so you can take awesome pictures.",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
+            " Для работы устройства необходимо включить геолокацию",
+          //buttonNeutral: "Ask Me Later",
+          buttonNegative: "Нет",
+          buttonPositive: "Да"
         }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
 
         console.log("You can use Location");
-
-        
+        return true      
         
         
       } else {
@@ -172,7 +170,7 @@ class Home extends Component {
         };
 
       const  getLocation = () => {
-        if(requestLocationPermission) 
+        if(requestLocationPermission()) 
         {
           Geolocation.getCurrentPosition((position) => { 
           //this.setState({altitude: position.coords.altitude}) 
@@ -195,7 +193,7 @@ class Home extends Component {
           maximumAge: 2000 
       }); 
         } else {
-          this.setState({coord: 'Bad'})
+          requestLocationPermission()
         }
       }
      // const {altitude, latitude } = this.state
@@ -204,8 +202,7 @@ class Home extends Component {
             <View style={styles.header}>
             <Text > Регион:  </Text>
 
-            {this.state.loading ? <ActivityIndicator /> 
-            : this.state.valueInStor ==='' ? <Text style={styles.h2}> {this.state.region} </Text> 
+            {this.state.region ? <Text style={styles.h2}> {this.state.region} </Text> 
             : <Text style={styles.h2}> {this.state.valueInStor}</Text>}
             
             </View>
@@ -222,7 +219,7 @@ class Home extends Component {
                 {/* <Button title="Запрос Here" onPress={() => getRegion(latitude,longitude)}/> */}
                 <View style={styles.button}><Button title="Запрос Here" onPress={() => getRegion(latitude,longitude)}/></View>
                 
-                <Button title="Запрос Яндекс" onPress={() => point(56.0442424,47.1523424)}/>
+                <Button title="Запрос Разрешений" onPress={requestLocationPermission}/>
             </View>
           </View>
             
