@@ -4,6 +4,7 @@ import Points from './Points'
 import { styles } from '../../styles'
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage' 
+import { connect } from 'react-redux'
 //import Geocoder from 'react-native-geocoding';
 //import { Geocoder } from 'react-native-yamap';
 
@@ -196,6 +197,8 @@ class Home extends Component {
           requestLocationPermission()
         }
       }
+
+      console.log(this.props.testStore);
      // const {altitude, latitude } = this.state
         return (
           <View style={styles.parent}>
@@ -228,4 +231,11 @@ class Home extends Component {
 }
 
 export default Home
+
+// export default connect(
+//   state => ({
+//     testStore: state
+//   }),
+//   dispatch => ({})
+// )(Home);
 
