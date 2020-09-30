@@ -7,6 +7,9 @@ export const styles = StyleSheet.create({
     header: {
         flex: 1,
     },
+    containerAbout:{
+        padding: 40    
+    },
     centerChild:{
         flex: 7,
         justifyContent: 'center',
@@ -43,7 +46,7 @@ export const styles = StyleSheet.create({
         width: '80%'
     },
     text: {
-       
         fontSize: 18,
+        textAlign: 'center',
     }
 })

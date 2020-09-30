@@ -1,10 +1,11 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+import { styles } from '../../styles'
 
 const Sonya = () => {
     return (
-        <View>
-            <Text>Tab Sonya</Text>
+        <View style={styles.center}>
+            <Text style={styles.h1}>Tab Sonya</Text>
         </View>
     )
 }

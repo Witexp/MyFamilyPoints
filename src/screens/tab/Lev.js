@@ -1,12 +1,13 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+import { styles } from '../../styles'
 
-const lev = () => {
+const Lev = () => {
     return (
-        <View>
-            <Text>Tab Lev</Text>
+        <View style={styles.center}>
+            <Text style={styles.h1}>Tab Lev</Text>
         </View>
     )
 }
 
-export default lev
+export default Lev

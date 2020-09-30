@@ -3,7 +3,7 @@ import { Text, View, TextInput,Button } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { styles } from '../../styles'
 
-class Points   extends Component {
+class Location   extends Component {
     state = {
         value: '',
         valueInStor: ''
@@ -25,7 +25,7 @@ class Points   extends Component {
     //       // Error saving data
     //     }
     //   };
-    console.log('Points props', this.props)
+    console.log('Location props', this.props)
   
     const storeData = async (value) => {
         try {
@@ -59,7 +59,7 @@ class Points   extends Component {
         <View style={styles.center}>
 
             
-            <Text style={styles.h1}> Screen Points </Text>
+            <Text style={styles.h1}> Screen Location </Text>
 
             <View style={styles.button}>
                 <Button title="Получить регион" onPress={() => getRegionfromHome()}/>
@@ -83,6 +83,6 @@ class Points   extends Component {
    
 }}  
     
-    
 
-export default Points
+export default Location
+

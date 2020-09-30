@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Button, Text, View, PermissionsAndroid,ActivityIndicator } from 'react-native'
-import Points from './Points'
 import { styles } from '../../styles'
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage' 
@@ -73,10 +72,8 @@ function getAddressFromCoordinates({ latitude, longitude }) {
 
 const point = async (geo) => { 
   await Geocoder.init('b1c58f81-6468-406f-9e4a-99fb92ff29ef');
-  
   console.log(geo)
   const adress = await Geocoder.reverseGeocode(geo);
-
   console.log(adress)
   console.log(adress.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData) 
 }
@@ -95,11 +92,8 @@ const requestLocationPermission = async () => {
         }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
         console.log("You can use Location");
         return true      
-        
-        
       } else {
         console.log("Location permission denied");
       }
@@ -214,7 +208,8 @@ class Home extends Component {
                 <Text> Широта {this.state.latitude}</Text>
                 <Text> Долгота {this.state.longitude}</Text>
                 
-                <Button title="Go to Ponts" onPress={() => (this.props.navigation.navigate('Points',{region: this.state.region}))}/>
+                <View style={styles.button}><Button title="Сохранить регион" onPress={() => (this.props.navigation.navigate('Location',{region: this.state.region}))}/></View>
+                <View style={styles.button}><Button title="Очки Детей" onPress={() => (this.props.navigation.navigate('ChildPoints'))}/></View>
                 <View style={styles.button}><Button title="Запрос Геолокации" onPress={getLocation}/></View>
                 
                 {/* <Text>{getAddressFromCoordinates(119,56)}</Text> */}
@@ -224,6 +219,7 @@ class Home extends Component {
                 
                 <Button title="Запрос Разрешений" onPress={requestLocationPermission}/>
             </View>
+
           </View>
             
         )
