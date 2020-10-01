@@ -4,6 +4,7 @@ import { styles } from '../../styles'
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage' 
 import { connect } from 'react-redux'
+import { addRegion } from '../../Redux/actions'
 //import Geocoder from 'react-native-geocoding';
 //import { Geocoder } from 'react-native-yamap';
 
@@ -112,7 +113,7 @@ class Home extends Component {
         latitude: 0,
         longitude: 0,
         marker: {},
-        region: '',
+        regionSt: '',
         loading: false,
         valueInStor: ''
         
@@ -128,7 +129,7 @@ class Home extends Component {
         if (value !== null) {
           // We have data!!
           this.setState({valueInStor: value})
-          console.log(value);
+         // console.log(value);
         }
       } catch (error) {
         // Error retrieving data
@@ -137,6 +138,8 @@ class Home extends Component {
 
   
     render(props) {
+
+      console.log('props Home screen: ', this.props);
 
       const {marker,latitude,longitude } = this.state
 
@@ -155,9 +158,11 @@ class Home extends Component {
             let json = await response.json();
             
             setTimeout(() => {
-              console.log(json.Response.View[0].Result[0].Location.Address.County) 
-              this.setState({region: json.Response.View[0].Result[0].Location.Address.County})
+              console.log('Регион по геолокации',json.Response.View[0].Result[0].Location.Address.County) 
+              this.setState({regionSt: json.Response.View[0].Result[0].Location.Address.County})
+              this.props.addRegion(json.Response.View[0].Result[0].Location.Address.County)
             }, 2000);
+            
             this.setState({loading: false})
           } catch (error) {
             console.error(error);
@@ -208,14 +213,15 @@ class Home extends Component {
                 <Text> Широта {this.state.latitude}</Text>
                 <Text> Долгота {this.state.longitude}</Text>
                 
-                <View style={styles.button}><Button title="Сохранить регион" onPress={() => (this.props.navigation.navigate('Location',{region: this.state.region}))}/></View>
+                <View style={styles.button}><Button title="Сохранить регион" onPress={() => (this.props.navigation.navigate('Location',{region: this.state.regionSt}))}/></View>
                 <View style={styles.button}><Button title="Очки Детей" onPress={() => (this.props.navigation.navigate('ChildPoints'))}/></View>
                 <View style={styles.button}><Button title="Запрос Геолокации" onPress={getLocation}/></View>
                 
                 {/* <Text>{getAddressFromCoordinates(119,56)}</Text> */}
                  {/* <Button title="Запрос Here" onPress={() => getAddressFromCoordinates(56.04,47.15)}/> */}
                 {/* <Button title="Запрос Here" onPress={() => getRegion(latitude,longitude)}/> */}
-                <View style={styles.button}><Button title="Запрос Here" onPress={() => getRegion(latitude,longitude)}/></View>
+                <View style={styles.button}><Button title="Запрос Региона и сохранение в Store" onPress={() => getRegion(latitude,longitude)}/></View>
+                
                 
                 <Button title="Запрос Разрешений" onPress={requestLocationPermission}/>
             </View>
@@ -226,7 +232,13 @@ class Home extends Component {
     }
 }
 
-export default Home
+const mapStateToProps = state => {
+  return {
+    region: state.regionSt
+  }
+}
+
+export default connect(mapStateToProps, {addRegion}) (Home)
 
 // export default connect(
 //   state => ({

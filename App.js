@@ -6,8 +6,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { Provider, connect } from 'react-redux'
-import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import ReduxThunk from 'redux-thunk'
+import reducers from './src/Redux/reducers'
+
 
 import { styles } from './src/styles'
 import Home from './src/screens/stack/Home';  
@@ -28,7 +31,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
     
 // } 
 
-//const store = createStore(location);
+const store = createStore(reducers, applyMiddleware(ReduxThunk));
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -79,13 +82,16 @@ class App extends Component {
     
     console.log('props App',this.props);
     return (
- <NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
         <Drawer.Navigator>
           <Drawer.Screen name="Home" children={this.homeStack}/>
           <Drawer.Screen name="Location" component={Location}/>
           <Drawer.Screen name="About" component={About}/>
         </Drawer.Navigator>
       </NavigationContainer>
+      </Provider>
+ 
     )
   }
 }

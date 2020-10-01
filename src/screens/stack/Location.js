@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, TextInput,Button } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { styles } from '../../styles'
+import { connect } from 'react-redux'
 
 class Location   extends Component {
     state = {
@@ -82,6 +83,7 @@ class Location   extends Component {
     )
    
 }}  
+
     
 
 export default Location
