@@ -30,7 +30,7 @@ class Location   extends Component {
   
     const storeData = async (value) => {
         try {
-          await AsyncStorage.setItem('@storage_Key', value)
+          await AsyncStorage.setItem('@region_key', value)
           console.log('asyncStorage', value)
         } catch (e) {
           // saving error
@@ -38,7 +38,7 @@ class Location   extends Component {
       }
       const getData = async () => {
         try {
-          const value = await AsyncStorage.getItem('@storage_Key');
+          const value = await AsyncStorage.getItem('@region_key');
           if (value !== null) {
             // We have data!!
             this.setState({valueInStor: value})

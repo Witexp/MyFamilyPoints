@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import AddRegionReducer from './AddRegionReducer'
 
-export default combineReducers({
+export const rootReducer = combineReducers({
     regioninstore: AddRegionReducer,
 })

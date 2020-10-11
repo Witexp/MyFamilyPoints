@@ -7,9 +7,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware,compose } from 'redux'
 import ReduxThunk from 'redux-thunk'
-import reducers from './src/Redux/reducers'
+import {rootReducer} from './src/Redux/reducers/rootReducer'
 
 
 import { styles } from './src/styles'
@@ -20,6 +20,7 @@ import Polina from './src/screens/tab/Polina';
 import Sonya from './src/screens/tab/Sonya';
 import About from './src/screens/drawer/About';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncDataFetch from './src/screens/stack/AsyncDataFetch';
 
 
 
@@ -31,7 +32,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
     
 // } 
 
-const store = createStore(reducers, applyMiddleware(ReduxThunk));
+const store = createStore(rootReducer, compose(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -86,6 +87,7 @@ class App extends Component {
         <NavigationContainer>
         <Drawer.Navigator>
           <Drawer.Screen name="Home" children={this.homeStack}/>
+          <Drawer.Screen name="AsyncDataFetch" component={AsyncDataFetch}/>
           <Drawer.Screen name="Location" component={Location}/>
           <Drawer.Screen name="About" component={About}/>
         </Drawer.Navigator>

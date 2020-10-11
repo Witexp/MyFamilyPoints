@@ -5,79 +5,7 @@ import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage' 
 import { connect } from 'react-redux'
 import { addRegion } from '../../Redux/actions'
-//import Geocoder from 'react-native-geocoding';
-//import { Geocoder } from 'react-native-yamap';
 
-
-// const getData = async () => {
-//         try {
-//           const value = await AsyncStorage.getItem('@storage_Key');
-//           if (value !== null) {
-//             // We have data!!
-//             this.setState({valueInStor: value})
-//             console.log(value);
-//           }
-//         } catch (error) {
-//           // Error retrieving data
-//         }
-//       };
-
-// if (hasLocationPermission) { 
-//     Geolocation.getCurrentPosition((position) => { 
-//         console.log(position); 
-//     }, (error) => { 
-//         // См. таблицы кодов ошибок выше.
-//         console.log(error.code, error.message); 
-//     }, { 
-//         enableHighAccuracy: true, 
-//         timeout: 10000, 
-//         maximumAge: 10000 
-//     }); 
-// }
-
-//const API_KEY = 'uG1BHZSLrzK1AedFyZAPt4CTgFcz5Ftnt5CEL3kwiDc'
-//const API_KEY = 'LOyi-EItMoSLJn4RR7Y3OMaYLWJ5QQvOUgmzDbawWfbeULvhLHME14Nrm_0ydBJsWGVDX7VEcPpytZg1F_voeQ'
-function getAddressFromCoordinates({ latitude, longitude }) {
-  return new Promise((resolve) => {
-    //const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=${LOyi-EItMoSLJn4RR7Y3OMaYLWJ5QQvOUgmzDbawWfbeULvhLHME14Nrm_0ydBJsWGVDX7VEcPpytZg1F_voeQ}&mode=retrieveAddresses&prox=${latitude},${longitude}`
-    const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=${API_KEY}&mode=retrieveAddresses&prox=${latitude},${longitude}`
-
-    fetch(url)
-      .then(res => res.json())
-      .then((resJson) => {
-        // the response had a deeply nested structure :/
-        console.log(resJson.Response.View[0].Result[0].Location.Address.County)
-        if (resJson
-          && resJson.Response
-          && resJson.Response.View
-          && resJson.Response.View[0]
-          && resJson.Response.View[0].Result
-          && resJson.Response.View[0].Result[0]) {
-          resolve(resJson.Response.View[0].Result[0].Location.Address.Label)
-      
- 
-        } else {
-          resolve()
-        }
-      })
-      .catch((e) => {
-        console.log('Error in getAddressFromCoordinates', e)
-        resolve()
-      })
-  })
-}
-
-
- 
-
-
-const point = async (geo) => { 
-  await Geocoder.init('b1c58f81-6468-406f-9e4a-99fb92ff29ef');
-  console.log(geo)
-  const adress = await Geocoder.reverseGeocode(geo);
-  console.log(adress)
-  console.log(adress.response.GeoObjectCollection.metaDataProperty.GeocoderResponseMetaData) 
-}
 
 const requestLocationPermission = async () => {
     try {
@@ -103,8 +31,6 @@ const requestLocationPermission = async () => {
     }
   };
 
-
-
 const API_KEY = 'WXhH8ASpyi2b12VSBt3N290jKVAnF78TFFfSA9MvZUE'
 
 class Home extends Component {
@@ -112,100 +38,89 @@ class Home extends Component {
         //altitude: 0,
         latitude: 0,
         longitude: 0,
-        marker: {},
         regionSt: '',
         loading: false,
-        valueInStor: ''
-        
+        valueInStor: '' 
     }
+
+    getLocation = () => {
+        Geolocation.getCurrentPosition((position) => { 
+        const lat = position.coords.latitude.toFixed(2)
+        const lon = position.coords.longitude.toFixed(2)
+        this.setState({latitude: lat}) 
+        this.setState({longitude: lon})  
+       // console.log('lat && lon: ', lat, '&&', lon);
+        this.getRegion(lat,lon)
+        
+    }, (error) => { 
+        // См. таблицы кодов ошибок выше.
+        console.log(error.code, error.message); 
+    }, { 
+        enableHighAccuracy: true, 
+        timeout: 2000, 
+        maximumAge: 2000 
+    }); 
+    
+    }
+
+    getRegion = async (lat,lon) => {
+      //this.setState({loading: true})    
+      const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=${API_KEY}&mode=retrieveAddresses&prox=${lat},${lon}`
+      console.log('Координаты',lat,lon);
+      if (!lat||!lon){ 
+          
+        this.setState({region: 'Определите геолокацию'})
+      } else {
+        try {
+          let response = await fetch(url);
+          let json = await response.json();
+          
+          setTimeout(() => {
+            console.log('Регион по геолокации',json.Response.View[0].Result[0].Location.Address.County) 
+            this.setState({regionSt: json.Response.View[0].Result[0].Location.Address.County})
+            this.props.addRegion(json.Response.View[0].Result[0].Location.Address.County)
+          }, 2000);
+          
+          //this.setState({loading: false})
+        } catch (error) {
+          console.error(error);
+        }}
+      };
+
 
 
     
 
     
     componentDidMount = async () => {
-      try {
-        const value = await AsyncStorage.getItem('@storage_Key');
-        if (value !== null) {
-          // We have data!!
-          this.setState({valueInStor: value})
-         // console.log(value);
-        }
-      } catch (error) {
-        // Error retrieving data
+      await requestLocationPermission()
+      if(requestLocationPermission){
+        await this.getLocation()
       }
+
+      // try {
+      //   const value = await AsyncStorage.getItem('@region_key');
+      //   if (value !== null) {
+      //     // We have data!!
+      //     this.setState({valueInStor: value})
+      //    // console.log(value);
+      //   }
+      // } catch (error) {
+      //   // Error retrieving data
+      // }
     }
 
   
     render(props) {
-
-      console.log('props Home screen: ', this.props);
-
       const {marker,latitude,longitude } = this.state
 
-      
-
-      const getRegion = async (lat,lon) => {
-        this.setState({loading: true})    
-        const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=${API_KEY}&mode=retrieveAddresses&prox=${lat},${lon}`
-        console.log('Координаты',lat,lon);
-        if (!lat||!lon){ 
-            
-          this.setState({region: 'Определите геолокацию'})
-        } else {
-          try {
-            let response = await fetch(url);
-            let json = await response.json();
-            
-            setTimeout(() => {
-              console.log('Регион по геолокации',json.Response.View[0].Result[0].Location.Address.County) 
-              this.setState({regionSt: json.Response.View[0].Result[0].Location.Address.County})
-              this.props.addRegion(json.Response.View[0].Result[0].Location.Address.County)
-            }, 2000);
-            
-            this.setState({loading: false})
-          } catch (error) {
-            console.error(error);
-          }}
-        };
-
-      const  getLocation = () => {
-        if(requestLocationPermission()) 
-        {
-          Geolocation.getCurrentPosition((position) => { 
-          //this.setState({altitude: position.coords.altitude}) 
-          this.setState({latitude: position.coords.latitude.toFixed(2)}) 
-          this.setState({longitude: position.coords.longitude.toFixed(2)})  
-         // marker.lat = +Math.round(this.state.altitude)
-          marker.lat = +Math.round(this.state.latitude)
-          marker.lon = +Math.round(this.state.longitude)
-          // lati = this.state.latitude
-          // long = this.state.longitude
-
-          console.log('marker',marker);
-          console.log(position); 
-      }, (error) => { 
-          // См. таблицы кодов ошибок выше.
-          console.log(error.code, error.message); 
-      }, { 
-          enableHighAccuracy: true, 
-          timeout: 2000, 
-          maximumAge: 2000 
-      }); 
-        } else {
-          requestLocationPermission()
-        }
-      }
-
-      console.log(this.props.testStore);
-     // const {altitude, latitude } = this.state
         return (
           <View style={styles.parent}>
             <View style={styles.header}>
             <Text > Регион:  </Text>
 
-            {this.state.region ? <Text style={styles.h2}> {this.state.region} </Text> 
-            : <Text style={styles.h2}> {this.state.valueInStor}</Text>}
+            <Text style={styles.h2}> {this.props.regioninstore} </Text> 
+           
             
             </View>
             <View style={styles.centerChild}>
@@ -213,14 +128,9 @@ class Home extends Component {
                 <Text> Широта {this.state.latitude}</Text>
                 <Text> Долгота {this.state.longitude}</Text>
                 
-                <View style={styles.button}><Button title="Сохранить регион" onPress={() => (this.props.navigation.navigate('Location',{region: this.state.regionSt}))}/></View>
+                <View style={styles.button}><Button title="Сохранить регион в Storage" onPress={() => (this.props.navigation.navigate('Location',{region: this.state.regionSt}))}/></View>
                 <View style={styles.button}><Button title="Очки Детей" onPress={() => (this.props.navigation.navigate('ChildPoints'))}/></View>
-                <View style={styles.button}><Button title="Запрос Геолокации" onPress={getLocation}/></View>
-                
-                {/* <Text>{getAddressFromCoordinates(119,56)}</Text> */}
-                 {/* <Button title="Запрос Here" onPress={() => getAddressFromCoordinates(56.04,47.15)}/> */}
-                {/* <Button title="Запрос Here" onPress={() => getRegion(latitude,longitude)}/> */}
-                <View style={styles.button}><Button title="Запрос Региона и сохранение в Store" onPress={() => getRegion(latitude,longitude)}/></View>
+              
                 
                 
                 <Button title="Запрос Разрешений" onPress={requestLocationPermission}/>
@@ -234,16 +144,10 @@ class Home extends Component {
 
 const mapStateToProps = state => {
   return {
-    region: state.regionSt
+    regioninstore: state.regioninstore.region
   }
 }
 
 export default connect(mapStateToProps, {addRegion}) (Home)
 
-// export default connect(
-//   state => ({
-//     testStore: state
-//   }),
-//   dispatch => ({})
-// )(Home);
 
