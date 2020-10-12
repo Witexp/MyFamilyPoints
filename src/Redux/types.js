@@ -1,1 +1,2 @@
 export const ADD_REGION = 'ADD_REGION'
+export const FETCH_LIST_SUCCESS = 'FETCH_LIST_SUCCESS'

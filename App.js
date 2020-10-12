@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware,compose } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
 import ReduxThunk from 'redux-thunk'
 import {rootReducer} from './src/Redux/reducers/rootReducer'
 
@@ -32,7 +34,7 @@ import AsyncDataFetch from './src/screens/stack/AsyncDataFetch';
     
 // } 
 
-const store = createStore(rootReducer, compose(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
