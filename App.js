@@ -77,10 +77,14 @@ class App extends Component {
               
             }}
           />
-          <Stack.Screen name="Location" component={Location} 
+          <Stack.Screen name="Location" 
+            component={Location} 
             options = {this.OptionDefaultStack}
           />
-          <Stack.Screen name="ChildPoints" children={this.bottomPointTabs}/>
+          <Stack.Screen name="ChildPoints" 
+            children={this.bottomPointTabs}
+            options = {this.OptionDefaultStack}
+          />
           <Stack.Screen name="About" component={About}/>
       </Stack.Navigator>
     )
