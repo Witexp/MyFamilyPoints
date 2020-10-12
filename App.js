@@ -59,6 +59,8 @@ class App extends Component {
     )
   } 
 
+
+
   homeStack = (props) => {
     return(
       <Stack.Navigator>
@@ -66,17 +68,63 @@ class App extends Component {
             name="Home" 
             component={Home}
             options={{
+              headerTitleAlign: 'center' ,
               headerRight: () => (
                 <TouchableOpacity style={{paddingHorizontal: 10}} onPress={()=> props.navigation.toggleDrawer()}>
                   <Icon name="ios-menu" size={30} color="#4F8EF7" />
                 </TouchableOpacity>
-                
-              )
+              ),
+              
             }}
           />
-          <Stack.Screen name="Location" component={Location}/>
+          <Stack.Screen name="Location" component={Location} 
+            options = {this.OptionDefaultStack}
+          />
           <Stack.Screen name="ChildPoints" children={this.bottomPointTabs}/>
           <Stack.Screen name="About" component={About}/>
+      </Stack.Navigator>
+    )
+  }
+
+  OptionDefaultStack = (props) => ({
+    headerTitleAlign: 'center' ,
+    headerRight: () => (
+      <TouchableOpacity style={{paddingHorizontal: 10}} onPress={()=> props.navigation.toggleDrawer()}>
+        <Icon name="ios-menu" size={30} color="#4F8EF7" />
+      </TouchableOpacity>
+    ),
+    headerLeft: () => (
+    <TouchableOpacity style={{paddingHorizontal: 10}} onPress={()=> props.navigation.goBack()}>
+      <Icon name="chevron-back-outline" size={30} color="#4F8EF7" />
+    </TouchableOpacity>
+  )})
+  AboutStack = (props) => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="About" 
+          component={About}
+          options = {this.OptionDefaultStack}
+        />
+      </Stack.Navigator>
+    )
+  }
+  DataFatchStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Data Fetch" 
+          component={AsyncDataFetch}
+          options = {this.OptionDefaultStack}
+        />
+      </Stack.Navigator>
+    )
+  }
+  LocationStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Location Save" 
+          component={Location}
+          options = {this.OptionDefaultStack}
+        />
       </Stack.Navigator>
     )
   }
@@ -88,10 +136,10 @@ class App extends Component {
       <Provider store={store}>
         <NavigationContainer>
         <Drawer.Navigator>
-          <Drawer.Screen name="Home" children={this.homeStack}/>
-          <Drawer.Screen name="AsyncDataFetch" component={AsyncDataFetch}/>
-          <Drawer.Screen name="Location" component={Location}/>
-          <Drawer.Screen name="About" component={About}/>
+          <Drawer.Screen name="Home" children={this.homeStack}  options={{ drawerLabel: 'Home' }}/>
+          <Drawer.Screen name="AsyncDataFetch" children={this.DataFatchStack}/>
+          <Drawer.Screen name="Location" children={this.LocationStack}/>
+          <Drawer.Screen name="About" children={this.AboutStack}/>
         </Drawer.Navigator>
       </NavigationContainer>
       </Provider>
