@@ -26,7 +26,7 @@ class Location   extends Component {
     //       // Error saving data
     //     }
     //   };
-    console.log('Location props', this.props)
+    //console.log('Location props', this.props)
   
     const storeData = async (value) => {
         try {
@@ -50,7 +50,7 @@ class Location   extends Component {
       };
 
       const getRegionfromHome = () => {
-          this.setState({value: this.props.route.params.region})
+          this.setState({value: this.props.regioninstore})
       }
       
 
@@ -84,7 +84,13 @@ class Location   extends Component {
    
 }}  
 
+const mapStateToProps = (state) => {
+  return {
+    regioninstore: state.regioninstore.region
+  }
+  
+}
     
 
-export default Location
+export default connect(mapStateToProps,null)(Location)
 

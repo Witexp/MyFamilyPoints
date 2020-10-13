@@ -24,10 +24,21 @@ var mockApiData = [
     },
 ]
 
-export const GetList = () => dispatch => {
-        setTimeout(() => {
-            console.log('i got List')
-            dispatch({type: FETCH_LIST_SUCCESS, payload: mockApiData })
-        },2000)
+export const getListAction = (value) => {
+    return {
+        type: FETCH_LIST_SUCCESS, 
+        payload: value 
+    }
+}
+
+
+
+
+
+export const GetList = () => async (dispatch) => {
+    let response = await fetch('https://jsonplaceholder.typicode.com/albums?userId=1');
+    let json = await response.json();
+    dispatch(getListAction(json))
+        
      
   }
