@@ -1,12 +1,14 @@
 import { FETCH_LIST_SUCCESS } from "../types";
 
-const InitialState = [];
+const InitialState = {
+    fetchList: [],
+};
 
 
 export default (state = InitialState, action) => {
     switch (action.type) {
         case FETCH_LIST_SUCCESS: {
-            return action.payload;
+            return {...state, fetchList: action.payload };
         }
         default: return state
     }

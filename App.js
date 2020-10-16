@@ -135,7 +135,7 @@ class App extends Component {
 
   render() {
     
-    console.log('props App',this.props);
+    //console.log('props App',this.props);
     return (
       <Provider store={store}>
         <NavigationContainer>

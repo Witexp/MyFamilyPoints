@@ -1,4 +1,4 @@
-import {ADD_REGION, FETCH_LIST_SUCCESS} from '../types'
+import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER} from '../types'
 
 export const addRegion = (value) => {
     console.log('Регион в STORE!!!', value)
@@ -31,14 +31,26 @@ export const getListAction = (value) => {
     }
 }
 
+export const showLoader = () => {
+    return{
+        type: SHOW_LOADER
+    }
+}
+
+export const hideLoader = () => {
+    return{
+        type: HIDE_LOADER
+    }
+}
+
 
 
 
 
 export const GetList = () => async (dispatch) => {
+    dispatch(showLoader())
     let response = await fetch('https://jsonplaceholder.typicode.com/albums?userId=1');
     let json = await response.json();
-    dispatch(getListAction(json))
-        
-     
+    dispatch(getListAction(json)) 
+    dispatch(hideLoader()) 
   }

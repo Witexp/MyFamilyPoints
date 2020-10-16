@@ -40,10 +40,11 @@ class Home extends Component {
         longitude: 0,
         regionSt: '',
         loading: false,
-        valueInStor: '' 
+       // valueInStor: '' 
     }
 
     getLocation = () => {
+        this.setState({loading: true})
         Geolocation.getCurrentPosition((position) => { 
         const lat = position.coords.latitude.toFixed(2)
         const lon = position.coords.longitude.toFixed(2)
@@ -70,28 +71,30 @@ class Home extends Component {
       if (!lat||!lon){ 
           
         this.setState({region: 'Определите геолокацию'})
+        this.setState({loading: false})
       } else {
         try {
           let response = await fetch(url);
           let json = await response.json();
-          
+            
           setTimeout(() => {
-            console.log('Регион по геолокации',json.Response.View[0].Result[0].Location.Address.County) 
+           console.log('Регион по геолокации',json.Response.View[0].Result[0].Location.Address.County) 
             this.setState({regionSt: json.Response.View[0].Result[0].Location.Address.County})
-            this.props.addRegion(json.Response.View[0].Result[0].Location.Address.County)
+            this.props.addRegion(json.Response.View[0].Result[0].Location.Address.County) 
+            this.setState({loading: false})
           }, 2000);
           
           //this.setState({loading: false})
         } catch (error) {
           console.error(error);
-        }}
+        }
+        finally {
+         
+        }
+      }
       };
 
-
-
-    
-
-    
+      
     componentDidMount = async () => {
       await requestLocationPermission()
       if(requestLocationPermission){
@@ -118,18 +121,20 @@ class Home extends Component {
           <View style={styles.parent}>
             <View style={styles.header}>
             <Text > Регион:  </Text>
+            {this.state.loading ?  <ActivityIndicator size="large" color="#0000ff" />
+              : <Text style={styles.h2}> {this.props.regioninstore} </Text> 
+            }    
 
-            <Text style={styles.h2}> {this.props.regioninstore} </Text> 
-           
-            
             </View>
             <View style={styles.centerChild}>
                 <Text style={styles.h1}> Home Screen </Text>
                 <Text> Широта {this.state.latitude}</Text>
                 <Text> Долгота {this.state.longitude}</Text>
                 
-                <View style={styles.button}><Button title="Сохранить регион в Storage" onPress={() => (this.props.navigation.navigate('Location',{region: this.state.regionSt}))}/></View>
+                <View style={styles.button}><Button title="Перейти в Location" onPress={() => (this.props.navigation.navigate('Location',{region: this.state.regionSt}))}/></View>
                 <View style={styles.button}><Button title="Очки Детей" onPress={() => (this.props.navigation.navigate('ChildPoints'))}/></View>
+                <View style={styles.button}><Button title="Перезапросить геолокацию" onPress={() => (this.getLocation())}/></View>
+
               
                 
                 

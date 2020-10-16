@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, Button } from 'react-native'
+import { Text, View, Button, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 import { styles } from '../../styles'
 import Listcard from './Listcard'
@@ -13,6 +13,7 @@ class AsyncDataFetch extends Component {
         super(props)
     
         this.state = {
+            
              data: []
         }
     }
@@ -35,6 +36,15 @@ class AsyncDataFetch extends Component {
 
     render() {
         console.log(this.props)
+
+        if (this.props.loading) {
+            return( 
+                <View style={styles.center}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+                
+            )
+        }
         return (
             <View style={styles.center}>
                 <Text style={styles.h2}> Fetch Data userID: 1 </Text>
@@ -48,20 +58,17 @@ class AsyncDataFetch extends Component {
 const mapStateToProps = (state) => {
     console.log(state.getfetch)
     return {
-        fetchData: state.getfetch
+        fetchData: state.getfetch.fetchList,
+        loading: state.app.loading,
     }
-    
-    
 }
 
-export default connect(mapStateToProps,
-    dispatch => ({
-        onGetList: ()=> {
-           
-            dispatch(GetList())
-        }
-    })    
-    
-    )(AsyncDataFetch)
+const mapDispatchToProps = (dispatch) => ({
+    onGetList: () => {
+        dispatch(GetList())
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps) (AsyncDataFetch)
 
 
