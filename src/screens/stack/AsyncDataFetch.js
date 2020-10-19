@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Text, View, Button, ActivityIndicator } from 'react-native'
+import { Text, View, Button, ActivityIndicator,Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { styles } from '../../styles'
 import Listcard from './Listcard'
 
-import {GetList} from '../../Redux/actions'
+import {GetList, showAlert} from '../../Redux/actions'
 
 
 
@@ -29,13 +29,25 @@ class AsyncDataFetch extends Component {
             console.error(error);
           }
     }
+
+   createAlert = (text) =>
+    Alert.alert(
+      "Alert",
+      `${text}`,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
     
 
    
        
 
     render() {
-        console.log(this.props)
+        //console.log(this.props)
+       
 
         if (this.props.loading) {
             return( 
@@ -48,6 +60,8 @@ class AsyncDataFetch extends Component {
         return (
             <View style={styles.center}>
                 <Text style={styles.h2}> Fetch Data userID: 1 </Text>
+                {this.props.alert && this.createAlert('Alert из редакс')}
+                <Button title='alert' onPress={() => this.createAlert('Сообщение для Alert')}></Button>
                 {!this.props.fetchData.length ? <Button title='Загрузить' onPress={this.props.onGetList}/>
                 :  this.props.fetchData.map((item)=><Listcard title={item.title} key={item.id}/>)}
                 
@@ -56,17 +70,19 @@ class AsyncDataFetch extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log(state.getfetch)
+    //console.log(state.getfetch)
     return {
         fetchData: state.getfetch.fetchList,
         loading: state.app.loading,
+        alert: state.app.alert
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     onGetList: () => {
         dispatch(GetList())
-    }
+    },
+    showAlert: () => { dispatch(showAlert('тест'))}
 })
 
 export default connect(mapStateToProps, mapDispatchToProps) (AsyncDataFetch)

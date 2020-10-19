@@ -1,4 +1,4 @@
-import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER} from '../types'
+import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT} from '../types'
 
 export const addRegion = (value) => {
     console.log('Регион в STORE!!!', value)
@@ -24,6 +24,9 @@ var mockApiData = [
     },
 ]
 
+
+
+
 export const getListAction = (value) => {
     return {
         type: FETCH_LIST_SUCCESS, 
@@ -45,12 +48,36 @@ export const hideLoader = () => {
 
 
 
+export const showAlert = (text) => {
+    return dispatch => {
+        dispatch({type: SHOW_ALERT, payload: text})
+
+        setTimeout(() => {
+            dispatch(hideAlert())
+        }, 4000)
+    }
+}
+
+export const hideAlert = () => {
+    return{
+        type: HIDE_ALERT
+    }
+}
+
+
 
 
 export const GetList = () => async (dispatch) => {
     dispatch(showLoader())
-    let response = await fetch('https://jsonplaceholder.typicode.com/albums?userId=1');
-    let json = await response.json();
-    dispatch(getListAction(json)) 
-    dispatch(hideLoader()) 
+    try {
+        let response = await fetch('https://jsonplaceholder.typicode.com/albums?userId=1');
+        let json = await response.json();
+        dispatch(getListAction(json)) 
+        dispatch(showAlert('test getList')) 
+        dispatch(hideLoader()) 
+    }
+    catch(err){
+        dispatch({type: 'REDUX_ERROR', payload: err})
+    }
+    
   }
