@@ -1,4 +1,4 @@
-import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT} from '../types'
+import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT, GET_POINT_LEVA} from '../types'
 
 export const addRegion = (value) => {
     console.log('Регион в STORE!!!', value)
@@ -81,3 +81,25 @@ export const GetList = () => async (dispatch) => {
     }
     
   }
+
+export const getPointLevaAction = (value) => {
+    return {
+        type: GET_POINT_LEVA,
+        payload: value
+    }
+}
+
+export const getPontLeva = () => async (dispatch) => {
+    console.log('getPoint action')
+    dispatch(showLoader())
+    try {
+        let response = await fetch('https://my-family-points.firebaseio.com/lev.json')
+        let json = await response.json();
+        console.log(json)
+        dispatch(getPointLevaAction(json))
+        dispatch(hideLoader())
+        
+    } catch (error) {
+        console.log('Ошибка fetch', error)
+    }
+}

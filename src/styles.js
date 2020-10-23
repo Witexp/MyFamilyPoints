@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
+    activityIndikator: {
+        padding: 20,
+    }
+    ,
     parent:{
         flex:1,
     },
