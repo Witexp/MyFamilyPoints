@@ -6,3 +6,5 @@ export const SHOW_ALERT = 'SHOW_ALERT'
 export const HIDE_ALERT = 'HIDE_ALERT'
 
 export const GET_POINT_LEVA = 'GET_POINT_LEVA'
+
+export const GET_USERS_SAGA = 'GET_USERS_SAGA'

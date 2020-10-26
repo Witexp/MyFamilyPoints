@@ -1,4 +1,4 @@
-import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT, GET_POINT_LEVA} from '../types'
+import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT, GET_POINT_LEVA, GET_USERS_SAGA} from '../types'
 
 export const addRegion = (value) => {
     console.log('Регион в STORE!!!', value)
@@ -101,5 +101,13 @@ export const getPontLeva = () => async (dispatch) => {
         
     } catch (error) {
         console.log('Ошибка fetch', error)
+    }
+}
+
+export const getUserAction = () => {
+    console.log("get User Action")
+    return {
+        type: GET_USERS_SAGA,
+        
     }
 }
