@@ -8,3 +8,5 @@ export const HIDE_ALERT = 'HIDE_ALERT'
 export const GET_POINT_LEVA = 'GET_POINT_LEVA'
 
 export const GET_USERS_SAGA = 'GET_USERS_SAGA'
+
+export const GET_USERS_THIINC = 'GET_USERS_THIINC'

@@ -107,7 +107,8 @@ export const getPontLeva = () => async (dispatch) => {
 export const getUserAction = () => {
     console.log("get User Action")
     return {
-        type: GET_USERS_SAGA,
+        //type: GET_USERS_SAGA,
+        type: GET_USERS_THIINC
         
     }
 }
