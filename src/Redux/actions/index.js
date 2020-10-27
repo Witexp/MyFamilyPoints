@@ -1,4 +1,4 @@
-import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT, GET_POINT_LEVA, GET_USERS_SAGA} from '../types'
+import {ADD_REGION, FETCH_LIST_SUCCESS, SHOW_LOADER, HIDE_LOADER, SHOW_ALERT, HIDE_ALERT, GET_POINT_LEVA, GET_USERS_SAGA, GET_USERS_THIINC, CLEAN_USER_LIST} from '../types'
 
 export const addRegion = (value) => {
     console.log('Регион в STORE!!!', value)
@@ -104,11 +104,42 @@ export const getPontLeva = () => async (dispatch) => {
     }
 }
 
-export const getUserAction = () => {
+
+
+
+export const getUserAction = (json) => {
     console.log("get User Action")
     return {
         //type: GET_USERS_SAGA,
-        type: GET_USERS_THIINC
+        type: GET_USERS_THIINC,
+        payload: json
         
+    }
+}
+
+export const getUserThink = () => async (dispatch) => {
+    console.log('getUserThink action')
+    dispatch(showLoader())
+    try {
+        let response = await fetch('https://jsonplaceholder.typicode.com/users')
+        let json = await response.json();
+        console.log(json)
+        dispatch(getUserAction(json))
+        dispatch(hideLoader())
+        
+    } catch (error) {
+        console.log('Ошибка fetch', error)
+    }
+}
+
+export const getUserFromSaga = () => {
+    return {
+        type: GET_USERS_SAGA,
+    }
+}
+
+export const cleanUserList = () => {
+    return {
+        type: CLEAN_USER_LIST
     }
 }
