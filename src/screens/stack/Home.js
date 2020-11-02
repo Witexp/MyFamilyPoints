@@ -96,10 +96,13 @@ class Home extends Component {
 
       
     componentDidMount = async () => {
-      await requestLocationPermission()
-      if(requestLocationPermission){
-        await this.getLocation()
-      }
+      if (this.props.regioninstore === '')
+      {
+        await requestLocationPermission()
+        if(requestLocationPermission){
+          await this.getLocation()
+        } 
+    }
 
       // try {
       //   const value = await AsyncStorage.getItem('@region_key');
@@ -133,11 +136,7 @@ class Home extends Component {
                 
                 <View style={styles.button}><Button title="Перейти в Location" onPress={() => (this.props.navigation.navigate('Location',{region: this.state.regionSt}))}/></View>
                 <View style={styles.button}><Button title="Очки Детей" onPress={() => (this.props.navigation.navigate('ChildPoints'))}/></View>
-                <View style={styles.button}><Button title="Перезапросить геолокацию" onPress={() => (this.getLocation())}/></View>
-
-              
-                
-                
+                <View style={styles.button}><Button title="Перезапросить геолокацию" onPress={() => (this.getLocation())}/></View>                
                 <Button title="Запрос Разрешений" onPress={requestLocationPermission}/>
             </View>
 
