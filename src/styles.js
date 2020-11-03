@@ -52,5 +52,18 @@ export const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         textAlign: 'center',
+    },
+    pointvaluebox:{
+        flexDirection: 'row', 
+        marginHorizontal: 10, 
+        paddingHorizontal: 10,
+        alignItems: 'center', 
+        justifyContent: 'space-between'
+    },
+    pointvalue: {
+        marginLeft:10, 
+        height: 40, 
+        borderColor: 'gray', 
+        borderWidth: 1 
     }
 })
