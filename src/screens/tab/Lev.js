@@ -7,14 +7,13 @@ import { styles } from '../../styles'
 
 const Lev = (props) => {
 
-    const [valueHomework, onValueHomework ] = useState('0')
-    const [valueDishwasher, onValueDishwasher ] = useState('0')
-    const [valueBehavior, onValueBehavior ] = useState('0')
-    const [valueAdditionally, onValueAdditionally ] = useState('0')
+    const [valueHomework, onValueHomework ] = useState('')
+    const [valueDishwasher, onValueDishwasher ] = useState('')
+    const [valueBehavior, onValueBehavior ] = useState('')
+    const [valueAdditionally, onValueAdditionally ] = useState('')
+    
     const p = 10
 
-
-    
     
     const dateformat = (date) => {
         let dd = date.getDate()
@@ -24,11 +23,13 @@ const Lev = (props) => {
         let yyyy = date.getFullYear()
         if (yyyy < 10) yyyy = '0' + dd
         
-        return dd + '.' + mm + '.' + yyyy
+        return dd +  mm +  yyyy
     }
     const nowDate = dateformat( new Date());
     console.log('Текущая дата', nowDate)
 
+    //const now = asd
+    const test2 = 11
     console.log('props leva', props.points)
     console.log('props leva', Object.keys(props.points).length )
     if (props.loading ) return <View style={styles.center}><ActivityIndicator size="large" color="#0000ff" /></View>
@@ -41,14 +42,30 @@ const Lev = (props) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            homework: +valueHomework,
-            dishwasher: +valueDishwasher,
-            behavior: +valueBehavior,
-            additionally: +valueAdditionally,
+            date: nowDate,
+            // [test2]: 'test',
+            // [nowDate]: 'testdate',
+            [nowDate]: {
+                homework: +valueHomework,
+                dishwasher: +valueDishwasher,
+                behavior: +valueBehavior,
+                additionally: +valueAdditionally,
+            }
         })
         });
         const dt = await response.json()
         console.log('dt', dt)
+        // onValueHomework('')
+        // onValueDishwasher('')
+        // onValueBehavior('')
+        // onValueAdditionally('')
+    }
+    
+
+    const dateout = () =>  {
+        const dateInstore = props.points.date.date
+
+        return dateInstore.slice(0,2) + '.' + dateInstore.slice(2,4) + '.' + dateInstore.slice(4)
     }
 
     //const 
@@ -60,42 +77,50 @@ const Lev = (props) => {
            {Object.keys(props.points).length > 0 &&  
             (<View style={{ width: '70%'}}>
                 <View>
-                    <Text>Дата: {props.points.date.date}</Text>
+                    <Text>Дата: {dateout()}</Text>
                     
                 </View>
                 <View style={styles.pointvaluebox}>
-                    <Text>Уроки: {props.points.date.homework}</Text>
+                    <Text>Уроки: {props.points.date.[nowDate].homework}</Text>
                     <TextInput 
                         style={styles.pointvalue}
                         onChangeText={text => onValueHomework(text)}
                         value={valueHomework}
+                        keyboardType='phone-pad'
+                        placeholder='0'
                     />
                 </View>
 
                 <View style={styles.pointvaluebox}>
-                <Text>Мытье посуды: {props.points.date.dishwasher} </Text>
+                <Text>Мытье посуды: {props.points.date.[nowDate].dishwasher} </Text>
                     <TextInput 
                         style={styles.pointvalue}
                         onChangeText={text => onValueDishwasher(text)}
                         value={valueDishwasher}
+                        keyboardType='phone-pad'
+                        placeholder='0'
                     />
                 </View>
                
                 <View style={styles.pointvaluebox}>
-                <Text>Поведение: {props.points.date.behavior}</Text>
+                <Text>Поведение: {props.points.date.[nowDate].behavior}</Text>
                     <TextInput 
                         style={styles.pointvalue}
                         onChangeText={text => onValueBehavior(text)}
                         value={valueBehavior}
+                        keyboardType='phone-pad'
+                        placeholder='0'
                     />
                 </View>
                 
                 <View style={styles.pointvaluebox}>
-                <Text>Дополнительно: {props.points.date.additionally}</Text>
+                <Text>Дополнительно: {props.points.date.[nowDate].additionally}</Text>
                     <TextInput 
                         style={styles.pointvalue}
                         onChangeText={text => onValueAdditionally(text)}
                         value={valueAdditionally}
+                        keyboardType='phone-pad'
+                        placeholder='0'
                     />
                 </View>
                
