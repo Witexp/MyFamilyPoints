@@ -10,11 +10,13 @@ import Lev from './screens/tab/Lev';
 import Polina from './screens/tab/Polina';
 import Sonya from './screens/tab/Sonya';
 import About from './screens/drawer/About';
+
 import AsyncDataFetch from './screens/stack/AsyncDataFetch';
 import SagaScreen from './screens/stack/SagaScreen';
 
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
+import {Login }from './screens/stack/Login';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -32,6 +34,7 @@ export default class Navigator extends Component {
         </Tab.Navigator>
         )
       } 
+      
     
     
     
@@ -60,6 +63,8 @@ export default class Navigator extends Component {
                 options = {this.OptionDefaultStack}
               />
               <Stack.Screen name="About" component={About}/>
+              <Stack.Screen name="LogIn" component={Login}/>
+              
           </Stack.Navigator>
         )
       }

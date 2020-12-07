@@ -138,6 +138,7 @@ class Home extends Component {
                 <View style={styles.button}><Button title="Очки Детей" onPress={() => (this.props.navigation.navigate('ChildPoints'))}/></View>
                 <View style={styles.button}><Button title="Перезапросить геолокацию" onPress={() => (this.getLocation())}/></View>                
                 <Button title="Запрос Разрешений" onPress={requestLocationPermission}/>
+                <Button title="Formik" onPress={() => {this.props.navigation.navigate('LogIn')}} />
             </View>
 
           </View>
